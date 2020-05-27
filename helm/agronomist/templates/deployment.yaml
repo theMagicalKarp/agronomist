@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "template.fullname" . }}
+  labels:
+    app: {{ template "template.name" . }}
+    chart: {{ template "template.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "template.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "template.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      serviceAccountName: {{ template "template.fullname" . }}
+      automountServiceAccountToken: true
+      containers:
+        - name: agronomist
+          {{- if .Values.image.override }}
+          image: '{{ .Values.image.override }}'
+          {{- else }}
+          image: '{{ .Values.image.registry }}/{{ .Values.image.repo }}:{{ .Values.image.tag }}'
+          {{- end }}
+          securityContext:
+            runAsUser: 1002
+            allowPrivilegeEscalation: false
+          env:
+            {{- range $key, $value := .Values.environmentFields }}
+            - name: {{ $key }}
+              valueFrom:
+                fieldRef:
+                  fieldPath: {{ $value | quote }}
+            {{- end }}
+          {{- if .Values.resources }}
+          resources:
+{{ toYaml .Values.resources | trimSuffix "\n" | indent 12 }}
+          {{- end }}

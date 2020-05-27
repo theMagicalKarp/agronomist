@@ -1,0 +1,22 @@
+---
+image:
+  registry: 'quay.io'
+  repo: 'themagicalkarp/agronomist'
+  tag: 'latest'
+
+replicas: 3
+
+minAvailable: 25%
+
+environmentFields:
+  NAMESPACE: metadata.namespace
+  POD: metadata.name
+  POD_UID: metadata.uid
+
+resources:
+  limits:
+    cpu: 2
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 512Mi

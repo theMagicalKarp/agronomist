@@ -1,0 +1,5 @@
+apiVersion: v2
+name: agronomist
+description: A Helm chart for installing agronomist
+version: '0.0.1'
+team: infre
