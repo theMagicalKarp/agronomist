@@ -71,7 +71,7 @@ func (s *ScalingPolicyReconciler) AttemptClaims(ctx context.Context) error {
 					"namespace": s.OwnerNamespace, // since ownerReferences is namespaced
 					"labels": map[string]string{
 						"policy-namespace": scalingPolicy.GetNamespace(),
-						"policy-name": scalingPolicy.GetName(),
+						"policy-name":      scalingPolicy.GetName(),
 					},
 					"ownerReferences": []metav1.OwnerReference{
 						metav1.OwnerReference{

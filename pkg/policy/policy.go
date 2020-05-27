@@ -9,9 +9,9 @@ import (
 	"github.com/open-policy-agent/opa/ast"
 	"github.com/open-policy-agent/opa/rego"
 
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	coreV1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
 	metricsv1beta1 "k8s.io/metrics/pkg/apis/metrics/v1beta1"
 
@@ -34,7 +34,6 @@ type ScalingPolicy struct {
 	CheckInterval int
 	LastScale     time.Time
 }
-
 
 func CreateScalingPolicy(obj *unstructured.Unstructured) (*ScalingPolicy, error) {
 	deployment, exists, err := unstructured.NestedString(obj.Object, "spec", "deployment")
@@ -128,8 +127,8 @@ func CreateScalingPolicy(obj *unstructured.Unstructured) (*ScalingPolicy, error)
 		Max:           int(max),
 		MaxStepUp:     int(maxStepUp),
 		MaxStepDown:   int(maxStepDown),
-		UpThrottle:    time.Duration(upDelay)*time.Second,
-		DownThrottle:  time.Duration(downDelay)*time.Second,
+		UpThrottle:    time.Duration(upDelay) * time.Second,
+		DownThrottle:  time.Duration(downDelay) * time.Second,
 		CheckInterval: int(interval),
 	}, nil
 }
@@ -310,16 +309,16 @@ func (s *ScalingPolicy) DetermineScale(ctx context.Context, storage *storage.Sto
 	}
 
 	if len(rs) < 1 {
-		return 0,fmt.Errorf("INVALID REGO RESPONSE")
+		return 0, fmt.Errorf("INVALID REGO RESPONSE")
 	}
 
 	if len(rs[0].Expressions) < 1 {
-		return 0,fmt.Errorf("INVALID REGO RESPONSE")
+		return 0, fmt.Errorf("INVALID REGO RESPONSE")
 	}
 
 	jsonNumber, ok := rs[0].Expressions[0].Value.(json.Number)
 	if !ok {
-		return 0,fmt.Errorf("INCORRECT RESPONSE TYPE")
+		return 0, fmt.Errorf("INCORRECT RESPONSE TYPE")
 	}
 
 	num, err := jsonNumber.Int64()

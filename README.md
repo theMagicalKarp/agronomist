@@ -116,7 +116,7 @@ scale = result {
 * Create better docs/examples
 * Allow usage of External/Custom metrics
 * Allow inclusion of other resources for determining scaling
-* Publish Helm Chartelm
+* Publish Helm Chart
 * Come up with better naming schema for ScalingPolicyStatus
 * Create tooling for running locally/testing rego queries
 * Better error handling for scripts which fail (loopback errors to ScalingPolicy/ScalingPolicyStatus resource)

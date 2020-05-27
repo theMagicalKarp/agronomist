@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"time"
 	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -30,12 +30,11 @@ import (
 	"github.com/theMagicalKarp/agronomist/pkg/storage"
 )
 
-
 func RootCMD() *cobra.Command {
 	command := &cobra.Command{
 		Use:   "agronomist",
 		Short: "agronomist autoscales Kubernetes pods using OPA",
-		Run: Run,
+		Run:   Run,
 	}
 
 	flags := command.Flags()
@@ -60,7 +59,6 @@ func RootCMD() *cobra.Command {
 	return command
 }
 
-
 func Run(cmd *cobra.Command, args []string) {
 	rego.RegisterBuiltin1(
 		&rego.Function{
@@ -81,7 +79,6 @@ func Run(cmd *cobra.Command, args []string) {
 	)
 
 	ctx, cancel := context.WithCancel(context.Background())
-
 
 	kubeconfig := viper.GetString("kubeconfig")
 	var config *rest.Config
